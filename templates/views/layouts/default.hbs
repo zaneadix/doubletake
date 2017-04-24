@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>doubletake</title>
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" type="text/css" href="/styles/site.css" >
+
+		{{!-- This file provides the default styling for the KeystoneJS Content Editor
+			- only renders when user is logged in and admin--}}
+		{{{isAdminEditorCSS user}}}
+
+		{{!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries
+		//- Safely remove this block if you are not targeting IE8 --}}
+		<!--[if lt IE 9]>
+			<script src="//cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.js"></script>
+			<script src="//cdn.jsdelivr.net/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+	</head>
+	<body>
+
+		<!--[if lt IE 10]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <header class="slim">
+
+            <div class="row nav-container">
+
+                <img class="logo fat" src="images/nocs.png"></img>
+
+                <ul class="menu-toggle"><li></li><li></li><li></li></ul>
+
+                <ul class="nav closed">
+                    <li><a href="#" scrollto="services">SERVICES</a></li>
+                    <li><a href="#" scrollto="team">TEAM</a></li>
+                    <li><a href="#" scrollto="portfolio">WORK</a></li>
+                    <li><a href="#" scrollto="contact">CONTACT</a></li>
+                </ul>
+
+            </div>
+
+        </header>
+
+		<div id="body">
+
+			<!--
+				Flash messages allow you to display once-off status messages to users, e.g. form
+				validation errors, success messages, etc
+			-->
+			{{#if messages}}
+			<div id="flash-messages" class="container">
+				{{#if messages.info}}
+				<div class="alert alert-info">
+						{{{flashMessages messages.info}}}
+				</div>
+				{{/if}}
+				{{#if messages.success}}
+				<div class="alert alert-success">
+						{{{flashMessages messages.success}}}
+				</div>
+				{{/if}}
+				{{#if messages.warning}}
+				<div class="alert alert-warning">
+						{{{flashMessages messages.warning}}}
+				</div>
+				{{/if}}
+				{{#if messages.error}}
+				<div class="alert alert-danger">
+						{{{flashMessages messages.error}}}
+				</div>
+				{{/if}}
+			</div>
+			{{/if}}
+
+			<!-- The content block should contain the body of your template's content-->
+			{{{body}}}
+
+		</div>
+
+		<div class="container">
+			<div id="footer">
+				<p>Powered by <a href="http://keystonejs.com" target="_blank">KeystoneJS</a>.</p>
+			</div>
+		</div>
+
+		<script src="/js/jquery/jquery-1.11.3.min.js" async></script>
+		<script src="/js/foundation/foundation.min.js" async></script>
+		<script src="/js/main.js" async></script>
+
+		{{{isAdminEditorJS user}}}
+
+	</body>
+</html>
