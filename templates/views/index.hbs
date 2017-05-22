@@ -1,6 +1,6 @@
 {{!< default}}
 
-<section id="feature"> <!-- FEATURE START -->
+<section id="feature">
 
     <div class="row">
 
@@ -8,17 +8,17 @@
 
         <div class="videoWrapper clearfix">
 
-            <iframe src="https://player.vimeo.com/video/113960754?color=ffffff&title=0&portrait=0" width="800" height="450"frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+            <iframe src="https://player.vimeo.com/video/{{data.featuredVideoId}}?color=ffffff&title=0&portrait=0" width="800" height="450"frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
         </div>
 
     </div>
 
-</section> <!-- FEATURE END -->
+</section>
 
 
 
-<section id="services" class="scroll-target"> <!-- SERVICES START -->
+<section id="services" class="scroll-target">
 
     <div class="row text-center">
 
@@ -30,7 +30,9 @@
 
                 <div class="service large-4 medium-4 small-12 columns">
 
-                    <img src="images/photo.png" alt="">
+                    <div class="image-container">
+                        <img src="images/photo.png" alt="">
+                    </div>
 
                     <h2>Photography</h2>
 
@@ -40,7 +42,9 @@
 
                 <div class="service large-4 medium-4 small-12 columns">
 
-                    <img src="images/film.png" alt="">
+                    <div class="image-container">
+                        <img src="images/film.png" alt="">
+                    </div>
 
                     <h2>Video</h2>
 
@@ -50,7 +54,9 @@
 
                 <div class="service large-4 medium-4 small-12 columns">
 
-                    <img src="images/write.png" alt="">
+                    <div class="image-container">
+                        <img src="images/write.png" alt="">
+                    </div>
 
                     <h2>Writing</h2>
 
@@ -64,11 +70,11 @@
 
     </div>
 
-</section> <!-- SERVICES END -->
+</section>
 
 
 
-<section id="team" class="scroll-target"> <!-- TEAM START -->
+<section id="team" class="scroll-target">
 
     <div class="row text-center">
 
@@ -96,15 +102,15 @@
 
     </div>
 
-</section> <!--  TEAM END -->
+</section>
 
 
 
-<section id="portfolio" class="scroll-target text-center"> <!-- PORTFOLIO START -->
+<section id="portfolio" class="scroll-target text-center" data-videos="{{data.videos}}">
 
     <div class="row">
 
-        <h1>Portfolio</h1>
+        <h1>Work</h1>
 
     </div>
 
@@ -112,12 +118,12 @@
 
     </div>
 
-    <button id='loadmore'>LOAD MORE</button>
+    <button id='loadmore'></button>
 
-</section> <!-- PORTFOLIO END -->
+</section>
 
 
-<section id="contact" class="scroll-target"> <!-- CONTACT START -->
+<section id="contact" class="scroll-target">
 
     <h1 class="text-center">Get In Touch</h1>
 
@@ -138,26 +144,25 @@
         <div class="large-6 medium-6 columns">
 
             <form id="email_form">
+                <input type="text" id="name" name="name" placeholder="Name" required>
 
-                <input type="text" id="name" placeholder="Your name">
+                <input type="email" id="user_email" name="email" placeholder="Email" required>
 
-                <input type="email" id="user_email" placeholder="Your email">
+                <input type="text" id="user_phone" name="phone" placeholder="Phone number">
 
-                <textarea id="message" placeholder="How can we help?" rows="10"></textarea>
+                <textarea id="message" name="message" placeholder="How can we help?" required rows="8"></textarea>
 
                 <button id="send" type="submit">SEND</button>
-
             </form>
+
+            <h2 class="success-message hide">Thanks for reaching out. We'll be in touch soon.</h2>
 
         </div>
 
     </div>
 
-</section> <!-- CONTACT END -->
+</section>
 
-
-
-<!-- MODAL STUFF -->
 
 <div class="reveal-modal-bg"></div>
 

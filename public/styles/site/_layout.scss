@@ -238,20 +238,18 @@ button:focus {
    color: #cdcdcd;
 }
 
-input[type="text"], input[type="email"],
-input[type="text"]:focus, input[type="email"]:focus,
-textarea {
+#email_form {
+    input, input:focus , textarea {
+        background-color: #FFFFFF;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #E0E0E0;
+        color: #444A54;
+    }
 
-    background-color: #FFFFFF;
-    border-width: 1px;
-    border-style: solid;
-    border-color: #E0E0E0;
-    color: #444A54;
-}
-
-input[type="text"]:focus, input[type="email"]:focus, textarea {
-
-    outline: 0;
+    input:focus, textarea {
+        outline: 0;
+    }
 }
 
 input:-webkit-autofill {
@@ -272,7 +270,6 @@ input:-webkit-autofill:focus {
     background-color: rgba(255, 255, 255, 0.0);
     border-radius: 0;
     border-width: 0;
-    /*background-image: url("../images/joey.gif");*/
     background-repeat: no-repeat;
     background-size: 120% auto;
     background-position: 30% 30%;
@@ -280,7 +277,7 @@ input:-webkit-autofill:focus {
 }
 
 .reveal-modal .filter {
-    background: rgba(68, 74, 84, 0.8);
+    background: rgba(68, 74, 84, 0.85);
     height: 100%;
     width: 100%;
     padding-top: 40px;
@@ -370,13 +367,26 @@ header, footer, #feature{
     margin-left: -40%;
 }
 
-.service img {
-    border-radius: 50%;
-    padding: 10%;
-    background-color: #edecec;
-    max-width: 70%;
-    margin-bottom: 20px;
-    overflow: visible;
+.hide {
+    display: none;
+}
+
+.service {
+
+    .image-container {
+
+        border-radius: 50%;
+        width: 80%;
+        height: 0;
+        padding-bottom: 80%;
+        margin: 0 auto;
+        background-color: #edecec;
+
+        img {
+            padding-top: 14%;
+            max-width: 70%;
+        }
+    }
 }
 
 .team-member
@@ -389,6 +399,34 @@ header, footer, #feature{
     max-width: 70%;
     display: block;
     margin: auto auto;
+}
+
+@keyframes rotate {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+}
+
+#loadmore {
+
+    position: relative;
+
+    &:after {
+        display: block;
+        content: "LOAD MORE";
+    }
+
+    &.loading:after {
+        content: "";
+        height: 1em;
+        width: 1em;
+        border-radius: 50%;
+        border: 2px solid #FFF;
+        border-top-color: transparent;
+        animation-name: rotate;
+        animation-duration: .5s; 
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+    }
 }
 
 #modal {
@@ -413,10 +451,27 @@ header, footer, #feature{
     box-shadow: 0 1px 4px rgba(0,0,0,0.2);
 }
 
-#portfolio figure
-{
-    margin: 0 0 20px;
-    padding: 0 10px;
+#portfolio {
+
+    .video-container {
+        max-height: 0px;
+        overflow: hidden;
+        -webkit-transition: all 4s;
+        transition: all 4s;
+        
+        .row {
+            max-width: 100%;
+        }
+
+        figure {
+            margin: 0 0 20px;
+            padding: 0 10px;
+        }
+
+        &.open {
+            max-height: 4000px;
+        }
+    }
 }
 
 .contact-info {
@@ -450,10 +505,6 @@ footer a
     border-bottom-width: 4px;
     border-bottom-color: #444A54;
     border-bottom-style: solid;
-}
-
-.loadmore {
-    margin: 0;
 }
 
 
@@ -491,7 +542,7 @@ footer a
     }
 
     p {
-        font-size: .85em;
+        font-size: .9em;
     }
 
     .about p {
@@ -520,6 +571,12 @@ footer a
     {
         font-size: 1em;
         margin: 10px 0;
+
+
+        &:after {
+            display: block;
+            content: "LOAD MORE";
+        }
     }
 
     #send
@@ -639,10 +696,18 @@ footer a
     }
 }
 
-@media screen and (max-width: 675px) {
+@media screen and (max-width: 642px) {
 
-    .service img, .team-member img {
-        max-width: 85%;
+    .service  {
+        .image-container {
+            width: 40%;
+            padding-bottom: 40%;
+        }
+        p {
+            max-width: 50%;
+            margin: 0 auto;
+            margin-bottom: 40px;
+        }
     }
 }
 
@@ -672,21 +737,18 @@ footer a
         text-align: center;
     }
 
-    .service img {
-        border-radius: 50%;
-        padding: 2%;
-        background-color: #edecec;
-        max-width: 45%;
-        margin-bottom: 20px;
-    }
-
-    .service p {
-        margin: 0 20px 20px;
-    }
-
-    .service h2 {
-        margin: 0;
-        font-size: 1.3em;
+    .service  {
+        .image-container {
+            width: 50%;
+            padding-bottom: 50%;
+        }
+        h2 {
+            font-size: 1.5em;
+        }
+        p {
+            font-size: .9em;
+            max-width: 80%;
+        }
     }
 
     #feature img {

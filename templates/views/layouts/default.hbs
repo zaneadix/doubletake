@@ -47,36 +47,6 @@
 
 		<div id="body">
 
-			<!--
-				Flash messages allow you to display once-off status messages to users, e.g. form
-				validation errors, success messages, etc
-			-->
-			{{#if messages}}
-			<div id="flash-messages" class="container">
-				{{#if messages.info}}
-				<div class="alert alert-info">
-						{{{flashMessages messages.info}}}
-				</div>
-				{{/if}}
-				{{#if messages.success}}
-				<div class="alert alert-success">
-						{{{flashMessages messages.success}}}
-				</div>
-				{{/if}}
-				{{#if messages.warning}}
-				<div class="alert alert-warning">
-						{{{flashMessages messages.warning}}}
-				</div>
-				{{/if}}
-				{{#if messages.error}}
-				<div class="alert alert-danger">
-						{{{flashMessages messages.error}}}
-				</div>
-				{{/if}}
-			</div>
-			{{/if}}
-
-			<!-- The content block should contain the body of your template's content-->
 			{{{body}}}
 
 		</div>
@@ -87,9 +57,10 @@
 			</div>
 		</div>
 
-		<script src="/js/jquery/jquery-1.11.3.min.js" async></script>
-		<script src="/js/foundation/foundation.min.js" async></script>
-		<script src="/js/main.js" async></script>
+		<script src="/js/jquery/jquery-1.11.3.min.js"></script>
+		<script src="/js/jquery-validation/dist/jquery.validate.min.js"></script>
+		<script src="/js/foundation/foundation.min.js" ></script>
+		<script src="/js/main.js" ></script>
 
 		{{{isAdminEditorJS user}}}
 

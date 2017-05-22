@@ -10,8 +10,7 @@
             }
         });
 
-        var videosUrl = 'https://spreadsheets.google.com/feeds/list/1ME1H40dkCZHZ4uNKFvd209KqtC4_MgKUcB66X2gnaB8/od6/public/basic?alt=json',
-            vimeoUrl = 'http://vimeo.com/api/v2/video/',
+        var vimeoUrl = 'http://vimeo.com/api/v2/video/',
             embedUrl = '//player.vimeo.com/video/';
 
         var body = $('body, html'),
@@ -24,13 +23,20 @@
             loadmore = $('#loadmore'),
             portfolio = $('.portfolio-pieces'),
             overlay = $('.reveal-modal-bg'),
+            emailForm = $('#email_form'),
             scrollTargets = $('.scroll-target').toArray();
 
         var navTargets = {},
-            videoData = [],
+            videoData = $('#portfolio').attr('data-videos'),
             portfolioIndex = 0,
             portfolioBuffer = 6;
 
+        if (videoData) {
+            videoData = JSON.parse(videoData);
+        } else {
+            videoData = [];
+        }
+ 
         header.find('a').toArray().forEach(function (a) {
             var a = $(a);
             navTargets[a.attr('scrollto')] = a;
@@ -49,27 +55,41 @@
         });
 
         loadmore.on('click', function () {
-            videoDataChain();
+            videoDataChain(true);
+        });
+
+        function submitForm () {
+            var name = emailForm.find('[name="name"]').val();
+            var email = emailForm.find('[name="email"]').val();
+            var phone = emailForm.find('[name="phone"]').val();
+            var message = emailForm.find('[name="message"]').val();
+            $.ajax({
+                type: "POST",
+                url: '/api/contact/enquiry',
+                data: {
+                    name: emailForm.find('[name="name"]').val(),
+                    email: emailForm.find('[name="email"]').val(),
+                    phone: emailForm.find('[name="phone"]').val(),
+                    message: emailForm.find('[name="message"]').val()
+                },
+                dataType: 'application/json',
+                complete: function (response) {
+                    if (response.status == 200) {
+                        emailForm.addClass('hide');
+                        $('#contact .success-message').removeClass('hide'); 
+                    }
+                }
+            });
+
+        };
+
+        emailForm.validate({
+            submitHandler: submitForm
         });
 
         $('.down, .up').on('click', function () {
             scrollToSection(this);
         });
-
-        $.get(videosUrl, function (data) {
-            var entries = data.feed.entry;
-            entries.forEach(function (entry) {
-                var vid = {};
-                vid.title = entry.title.$t
-                vid.id = entry.content.$t.replace('_cokwr: ', '');
-                videoData.push(vid);
-            });
-        }).done(function () {
-            videoDataChain();
-        });
-
-
-        //Navigation
 
         var toggleScroll = function () {
             body.toggleClass('overlay-on');
@@ -97,6 +117,11 @@
             body.animate({scrollTop: $('#'+scrollTo).offset().top - header.height()}, 1500);
         };
 
+        var toggleLoadingVideos = function () {
+            loadmore.toggleClass('loading');
+            loadmore.prop('disabled', function (i, prop) { return !prop; });
+        };
+
         $window.resize(function () {
             setFeatureHeight();
             checkMenuWidth();
@@ -114,10 +139,6 @@
                 logo.addClass('fat');
             }
 
-            // if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight)
-            //     console.log('bottom');
-            //     $(navTargets[navTargets.length-1]).addClass 'current'
-            // else
             scrollTargets.forEach(function (target) {
                 var target = $(target);
                 var top = target.offset().top - hHeight;
@@ -131,9 +152,7 @@
             });
         });
 
-
-
-        var addPortfolioItem = function (item) {
+        var createPortfolioItem = function (item) {
             var image = $(document.createElement('img'))
                 .addClass('piece')
                 .attr('src', item.image);
@@ -144,7 +163,7 @@
                 .text(item.title);
             var newPiece = $(document.createElement('figure'))
                 .addClass('large-6 medium-6 small-12 columns')
-                .attr('id', item.id)
+                .attr('id', item.vimeoId)
                 .attr('data-reveal-id', 'modal')
                 .append(anchor)
                 .append(caption)
@@ -152,54 +171,79 @@
                     setModalVideo(newPiece.attr('id'));
                     toggleScroll();
                 });
-
-            portfolio.append(newPiece);
+            return newPiece;
         }
 
+        var videoDataChain = function () {
 
-        var videoDataChain = function (max) {
+            var max = (portfolioIndex + portfolioBuffer);
+            max = (max > videoData.length) ? videoData.length : max;
 
-            var max = max || (portfolioIndex + portfolioBuffer);
+            var container;
+            var row;
 
-            if (portfolioIndex < max && portfolioIndex < videoData.length) {
+            var requestVideoData = function () {
                 var video = videoData[portfolioIndex];
-                $.get(vimeoUrl + video.id + '.json', function (data) {
+                $.get(vimeoUrl + video.vimeoId + '.json', function (data) {
                     var entry = data[0];
                     video.description = entry.description;
                     video.mobile_url = entry.mobile_url;
                     video.image = entry.thumbnail_large;
                     video.vimeo_title = entry.title;
                     video.url = entry.url;
-                    addPortfolioItem(video);
                 }).then(function () {
+                    var portfolioItem = createPortfolioItem(video);
+                    if (!(portfolioIndex % 2)) {
+                        row = $(document.createElement('div')).addClass('row');
+                    } 
+                    row.append(portfolioItem);
+                    if ((portfolioIndex % 2) || portfolioIndex == max-1) {
+                        console.log('appending Row');
+                        container.append(row)
+                    }
                     portfolioIndex++;
-                    videoDataChain(max);
+                    if (portfolioIndex < max) {
+                        requestVideoData();
+                    } else {
+                        console.log('rendering container');
+                        portfolio.append(container);
+                        setTimeout(function () {
+                            container.addClass('open');
+                        },100)
+                        toggleLoadingVideos();
+                    }
                 });
             }
-        };
+
+            if (portfolioIndex < max) {
+                toggleLoadingVideos();
+                container = $(document.createElement('div')).addClass('video-container');
+                requestVideoData();
+            }
+        }
 
         $('.team-member').on('click', function () {
-            $this = $(this);
+            var $this = $(this);
             toggleScroll();
             setModalMember($this.find('.name').text(), $this.find('.info').text(), $this.find('.name').attr('shortname'));
         });
 
         $('.team-member img')
         .on('mouseover', function () {
-            $this = $(this);
+            var $this = $(this);
             var src = $this.attr('src').split('.');
-            src = [src[0],'-anim.',src[1]].join('');
+            var src = [src[0],'-anim.',src[1]].join('');
             $this.attr('src', src);
         }).on('mouseout', function () {
-            $this = $(this)
-            src = $this.attr('src').split('-anim');
+            var $this = $(this)
+            var src = $this.attr('src').split('-anim');
             $this.attr('src', src[0]+src[1]);
         });
 
 
         $('.menu-toggle').on('click', function () {
-            isOpen = $(this).toggleClass('open').hasClass('open');
-            nav = $('.nav');
+            var isOpen = $(this).toggleClass('open').hasClass('open');
+            var nav = $('.nav');
             if(isOpen) {
                 nav.slideDown(400, function () {
                     nav.addClass('open').removeClass('closed');
@@ -222,8 +266,6 @@
                 }
             }
         }
-            
-
 
         var setFeatureHeight = function () {
             var vidHeight = featureVideo.offset().top + featureVideo.height();
@@ -240,6 +282,7 @@
 
 
         setFeatureHeight();
+        videoDataChain();
     });
 
 })(jQuery)

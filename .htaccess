@@ -1,0 +1,7 @@
+PassengerEnabled on
+PassengerAppRoot /home/thisisdo/doubletakssengerNodejs /home/thisisdo/.nvm/versions/node/v7.10.0/bin/node
+SetEnv NODE_ENV production
+SetEnv NODE_PATH /usr/lib/node_modules
+setEnv MONGO_URI mongodb://zaneadix:013187Za@doubletake-shard-00-00-mwlsk.mongodb.net:27017,doubletake-shard-00-01-mwlsk.mongodb.net:27017,doubletake-shard-00-02-mwlsk.mongodb.net:27017/doubletake?ssl=true&replicaSet=doubletake-shard-0&authSource=admin
+setEnv MAILGUN_API_KEY key-eb4f59df184574f16d5e2ea62226a087
+setEnv MAILGUN_DOMAIN mg.thisisdoubletake.com

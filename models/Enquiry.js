@@ -12,15 +12,10 @@ var Enquiry = new keystone.List('Enquiry', {
 });
 
 Enquiry.add({
-	name: { type: Types.Name, required: true },
+	name: { type: String, required: true },
 	email: { type: Types.Email, required: true },
 	phone: { type: String },
-	enquiryType: { type: Types.Select, options: [
-		{ value: 'message', label: 'Just leaving a message' },
-		{ value: 'question', label: 'I\'ve got a question' },
-		{ value: 'other', label: 'Something else...' },
-	] },
-	message: { type: Types.Markdown, required: true },
+	message: { type: String, required: true },
 	createdAt: { type: Date, default: Date.now },
 });
 
@@ -45,6 +40,7 @@ Enquiry.schema.methods.sendNotificationEmail = function (callback) {
 	}
 
 	if (!process.env.MAILGUN_API_KEY || !process.env.MAILGUN_DOMAIN) {
+		console.log(process.env);
 		console.log('Unable to send email - no mailgun credentials provided');
 		return callback(new Error('could not find mailgun credentials'));
 	}
@@ -58,10 +54,10 @@ Enquiry.schema.methods.sendNotificationEmail = function (callback) {
 			templateName: 'enquiry-notification',
 			transport: 'mailgun',
 		}).send({
-			to: admins,
+			to: 'zaneadix@gmail.com',
 			from: {
-				name: 'doubletake',
-				email: 'contact@doubletake.com',
+				name: 'Zane Adickes',
+				email: 'zaneadix@gmail.com',
 			},
 			subject: 'New Enquiry for doubletake',
 			enquiry: enquiry,
@@ -72,5 +68,5 @@ Enquiry.schema.methods.sendNotificationEmail = function (callback) {
 };
 
 Enquiry.defaultSort = '-createdAt';
-Enquiry.defaultColumns = 'name, email, enquiryType, createdAt';
+Enquiry.defaultColumns = 'name, email, phone, createdAt';
 Enquiry.register();

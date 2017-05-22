@@ -6989,16 +6989,14 @@ button:focus {
 :-ms-input-placeholder {
   color: #cdcdcd; }
 
-input[type="text"], input[type="email"],
-input[type="text"]:focus, input[type="email"]:focus,
-textarea {
+#email_form input, #email_form input:focus, #email_form textarea {
   background-color: #FFFFFF;
   border-width: 1px;
   border-style: solid;
   border-color: #E0E0E0;
   color: #444A54; }
 
-input[type="text"]:focus, input[type="email"]:focus, textarea {
+#email_form input:focus, #email_form textarea {
   outline: 0; }
 
 input:-webkit-autofill {
@@ -7015,14 +7013,13 @@ input:-webkit-autofill:focus {
   background-color: rgba(255, 255, 255, 0);
   border-radius: 0;
   border-width: 0;
-  /*background-image: url("../images/joey.gif");*/
   background-repeat: no-repeat;
   background-size: 120% auto;
   background-position: 30% 30%;
   background-color: transparent; }
 
 .reveal-modal .filter {
-  background: rgba(68, 74, 84, 0.8);
+  background: rgba(68, 74, 84, 0.85);
   height: 100%;
   width: 100%;
   padding-top: 40px; }
@@ -7088,13 +7085,19 @@ header, footer, #feature {
   height: 80%;
   margin-left: -40%; }
 
-.service img {
+.hide {
+  display: none; }
+
+.service .image-container {
   border-radius: 50%;
-  padding: 10%;
-  background-color: #edecec;
-  max-width: 70%;
-  margin-bottom: 20px;
-  overflow: visible; }
+  width: 80%;
+  height: 0;
+  padding-bottom: 80%;
+  margin: 0 auto;
+  background-color: #edecec; }
+  .service .image-container img {
+    padding-top: 14%;
+    max-width: 70%; }
 
 .team-member {
   margin-bottom: 20px; }
@@ -7103,6 +7106,29 @@ header, footer, #feature {
   max-width: 70%;
   display: block;
   margin: auto auto; }
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg); }
+  to {
+    transform: rotate(360deg); } }
+
+#loadmore {
+  position: relative; }
+  #loadmore:after {
+    display: block;
+    content: "LOAD MORE"; }
+  #loadmore.loading:after {
+    content: "";
+    height: 1em;
+    width: 1em;
+    border-radius: 50%;
+    border: 2px solid #FFF;
+    border-top-color: transparent;
+    animation-name: rotate;
+    animation-duration: .5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear; }
 
 #modal {
   text-align: center; }
@@ -7118,9 +7144,18 @@ header, footer, #feature {
 #portfolio img, .team-member img {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2); }
 
-#portfolio figure {
-  margin: 0 0 20px;
-  padding: 0 10px; }
+#portfolio .video-container {
+  max-height: 0px;
+  overflow: hidden;
+  -webkit-transition: all 4s;
+  transition: all 4s; }
+  #portfolio .video-container .row {
+    max-width: 100%; }
+  #portfolio .video-container figure {
+    margin: 0 0 20px;
+    padding: 0 10px; }
+  #portfolio .video-container.open {
+    max-height: 4000px; }
 
 .contact-info {
   color: #444A54; }
@@ -7145,9 +7180,6 @@ footer a {
   border-bottom-color: #444A54;
   border-bottom-style: solid; }
 
-.loadmore {
-  margin: 0; }
-
 /* VIMEO */
 #feature .controls-wrapper {
   display: none; }
@@ -7161,7 +7193,7 @@ footer a {
   section, footer {
     padding: 40px 0; }
   p {
-    font-size: .85em; }
+    font-size: .9em; }
   .about p {
     color: white;
     margin: 20px 20px; }
@@ -7176,6 +7208,9 @@ footer a {
   #loadmore {
     font-size: 1em;
     margin: 10px 0; }
+    #loadmore:after {
+      display: block;
+      content: "LOAD MORE"; }
   #send {
     font-size: 1em;
     margin: 0; }
@@ -7243,9 +7278,14 @@ footer a {
   header ul {
     font-size: 1em; } }
 
-@media screen and (max-width: 675px) {
-  .service img, .team-member img {
-    max-width: 85%; } }
+@media screen and (max-width: 642px) {
+  .service .image-container {
+    width: 40%;
+    padding-bottom: 40%; }
+  .service p {
+    max-width: 50%;
+    margin: 0 auto;
+    margin-bottom: 40px; } }
 
 @media screen and (max-width: 600px) {
   header ul {
@@ -7259,17 +7299,14 @@ footer a {
   p {
     font-size: .7em;
     text-align: center; }
-  .service img {
-    border-radius: 50%;
-    padding: 2%;
-    background-color: #edecec;
-    max-width: 45%;
-    margin-bottom: 20px; }
-  .service p {
-    margin: 0 20px 20px; }
+  .service .image-container {
+    width: 50%;
+    padding-bottom: 50%; }
   .service h2 {
-    margin: 0;
-    font-size: 1.3em; }
+    font-size: 1.5em; }
+  .service p {
+    font-size: .9em;
+    max-width: 80%; }
   #feature img {
     width: 95%; }
   .team-member:first-child {
